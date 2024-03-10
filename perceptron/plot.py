@@ -16,7 +16,7 @@ def categorize_predictions(df: pd.DataFrame, predictions: np.ndarray) -> pd.Data
     :return: DataFrame with the added column
     """
     categories = []
-    true_labels = df['line_position']
+    true_labels = df['value']
     res = df.copy()
     for true_label, predicted_label in zip(true_labels, predictions):
         if true_label == 1 and predicted_label == 1:      # True Positive
@@ -54,7 +54,7 @@ def plot(fig: matplotlib.figure.Figure,
                        'FN': 'lightcoral'}
 
     # calculate the accuracy
-    accuracy = accuracy_score(df['line_position'], predictions)
+    accuracy = accuracy_score(df['value'], predictions)
 
     # categorize the predictions
     df_cathegorized = categorize_predictions(df, predictions)

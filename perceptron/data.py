@@ -22,15 +22,15 @@ def generate_points(count: int,
 def evaluate_points(df: pd.DataFrame,
                     line_params: LineParams) -> pd.DataFrame:
     """
-    Function to evaluate the relative position of the points to a line. Adds 'line_position' column to the DataFrame
+    Function to evaluate the relative position of the points to a line. Adds 'value' column to the DataFrame
     (0=on the line, 1=above the line, -1=below the line).
     :param df: input DataFrame with 'x' and 'y' columns.
     :param line_params: LineParams object specifying the line equation.
-    :return: DataFrame with added 'line_position' column.
+    :return: DataFrame with added 'value' column.
     """
     y_limit = df['x'] * line_params.a + line_params.b
-    df['line_position'] = 1                             # Point lies above the line
-    df.loc[df['y'] < y_limit, 'line_position'] = -1     # Point lies below the line
+    df['value'] = 1                             # Point lies above the line
+    df.loc[df['y'] < y_limit, 'value'] = -1     # Point lies below the line
     return df
 
 
