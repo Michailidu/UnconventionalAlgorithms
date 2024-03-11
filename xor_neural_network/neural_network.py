@@ -15,8 +15,8 @@ class Layer:
         """
         self.input_size = input_size
         self.output_size = output_size
-        self.weights = np.random.uniform(size=(self.input_size, self.output_size))
-        self.bias = np.random.uniform(size=(1, self.output_size))
+        self.weights = np.random.random((self.input_size, self.output_size))
+        self.bias = np.random.random((1, self.output_size))
 
     def forward(self, inputs: np.ndarray) -> np.ndarray:
         """
@@ -26,7 +26,7 @@ class Layer:
         """
         value = np.dot(inputs, self.weights)
         value += self.bias
-        return value
+        return sigmoid(value)
 
 
 class NeuralNetwork:
@@ -54,8 +54,8 @@ class NeuralNetwork:
         """
         for _ in range(epochs):
             # forward pass
-            out_hidden = sigmoid(self.hidden_layer.forward(data))
-            out_output = sigmoid(self.output_layer.forward(out_hidden))
+            out_hidden = self.hidden_layer.forward(data)
+            out_output = self.output_layer.forward(out_hidden)
 
             # backward pass
             error = labels - out_output
@@ -75,5 +75,5 @@ class NeuralNetwork:
         :param data: Numpy array with input data.
         :return: Numpy array with predicted labels.
         """
-        out_hidden = sigmoid(self.hidden_layer.forward(data))
-        return sigmoid(self.output_layer.forward(out_hidden))
+        out_hidden = self.hidden_layer.forward(data)
+        return self.output_layer.forward(out_hidden)
