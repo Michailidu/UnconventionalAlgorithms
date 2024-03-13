@@ -32,10 +32,7 @@ class Perceptron:
             for i, row in df.iterrows():
                 guess = row.iloc[0] * self.weights[0] + row.iloc[1] * self.weights[1] + self.weights[2]
                 guess_signum = 1 if guess > 0 else -1
-                try:
-                    error = row['value'] - guess_signum
-                except KeyError:
-                    a = 2
+                error = row['value'] - guess_signum
 
                 if error != 0:
                     converged = False
