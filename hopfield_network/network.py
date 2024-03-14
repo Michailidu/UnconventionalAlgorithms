@@ -21,7 +21,7 @@ class HopfieldNetwork:
         size = pattern.shape[0]
         pattern = pattern.reshape(-1, 1)
         pattern[pattern == 0] = -1
-        for _ in range(10):
+        for _ in range(20):
             pattern = np.sign(np.dot(self.weighted_matrix.weighted_matrix_sum, pattern))
         pattern = pattern.reshape(size, size)
         pattern[pattern == -1] = 0
@@ -30,12 +30,13 @@ class HopfieldNetwork:
     def recover_async(self, pattern: np.array) -> np.array:
         pattern = pattern.copy()
         size = pattern.shape[0]
-        pattern = pattern.reshape(-1, 1)
+        pattern = pattern.reshape(1, -1)
         pattern[pattern == 0] = -1
         for _ in range(20):
-            for i in range(size):
-                neuron_sum = np.dot(self.weighted_matrix.weighted_matrix_sum[i], pattern)
-                pattern[i] = np.sign(neuron_sum)
+            for i in range(0, size * size):
+                matrix_column = self.weighted_matrix.weighted_matrix_sum[:, i].reshape(1, -1)
+                neuron_sum = np.dot(pattern, matrix_column.T)
+                pattern[0, i] = 1 if neuron_sum[0, 0] >= 0 else 0
         pattern = pattern.reshape(size, size)
         pattern[pattern == -1] = 0
         return pattern

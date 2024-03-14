@@ -62,9 +62,6 @@ class MyApp:
 
         self.output_text = tk.Label(self.root, text="")
         self.output_text.grid(row=idx, column=0, columnspan=2, padx=10, pady=10)
-        # self.output_text = tk.Text(self.root, height=10, width=50)
-        # self.output_text.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
-
 
     def save_pattern(self):
         pattern = self.chess_field.pattern
