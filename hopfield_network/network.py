@@ -6,17 +6,24 @@ from hopfield_network.pattern_storage import PatternStorage
 class HopfieldNetwork:
     def __init__(self, matrix_size: int):
         self.weighted_matrix = PatternStorage(matrix_size)
+        self.patterns = []
 
     def add_pattern(self, pattern: np.array) -> np.array:
         self.weighted_matrix.add_pattern(pattern)
+        self.patterns.append(pattern.copy())
         return pattern
 
     def remove_pattern(self, pattern: np.array) -> np.array:
         self.weighted_matrix.remove_pattern(pattern)
+        for idx, stored_pattern in enumerate(self.patterns):
+            if np.array_equal(stored_pattern, pattern):
+                self.patterns.pop(idx)
+                break
         return pattern
 
     def remove_all_patterns(self) -> np.array:
         self.weighted_matrix.weighted_matrix_sum = np.zeros_like(self.weighted_matrix.weighted_matrix_sum)
+        self.patterns = []
         return np.zeros_like(self.weighted_matrix.weighted_matrix_sum)
 
     def recover_sync(self, pattern: np.array) -> np.array:
@@ -43,3 +50,6 @@ class HopfieldNetwork:
         pattern = pattern.reshape(size, size)
         pattern[pattern == -1] = 0
         return pattern
+
+    def get_all_patterns(self) -> list:
+        return self.patterns
