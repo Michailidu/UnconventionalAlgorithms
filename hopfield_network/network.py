@@ -7,14 +7,17 @@ class HopfieldNetwork:
     def __init__(self, matrix_size: int):
         self.weighted_matrix = PatternStorage(matrix_size)
 
-    def add_pattern(self, pattern: np.array) -> None:
+    def add_pattern(self, pattern: np.array) -> np.array:
         self.weighted_matrix.add_pattern(pattern)
+        return pattern
 
-    def remove_pattern(self, pattern: np.array) -> None:
+    def remove_pattern(self, pattern: np.array) -> np.array:
         self.weighted_matrix.remove_pattern(pattern)
+        return pattern
 
-    def remove_all_patterns(self) -> None:
+    def remove_all_patterns(self) -> np.array:
         self.weighted_matrix.weighted_matrix_sum = np.zeros_like(self.weighted_matrix.weighted_matrix_sum)
+        return np.zeros_like(self.weighted_matrix.weighted_matrix_sum)
 
     def recover_sync(self, pattern: np.array) -> np.array:
         pattern = pattern.copy()
