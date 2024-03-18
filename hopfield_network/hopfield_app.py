@@ -8,6 +8,9 @@ from hopfield_network.pattern_viewer import PatternViewer
 
 
 class HopfieldApp:
+    """
+    Main application window for Hopfield network app
+    """
     def __init__(self, root: tk.Tk):
         size = 4
         self.hopfield_network = HopfieldNetwork(size)

@@ -4,6 +4,9 @@ from hopfield_network.pattern_grid import PatternGrid
 
 
 class PatternViewer(tk.Toplevel):
+    """
+    A window to view all patterns
+    """
     def __init__(self, master: tk.Tk, patterns: list[list[int]]):
         tk.Toplevel.__init__(self, master)
         self.patterns = patterns

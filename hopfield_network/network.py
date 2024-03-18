@@ -4,6 +4,9 @@ from hopfield_network.pattern_storage import PatternStorage
 
 
 class HopfieldNetwork:
+    """
+    Class to store patterns and recover them using a Hopfield network
+    """
     def __init__(self, matrix_size: int):
         self.weighted_matrix = PatternStorage(matrix_size)
         self.patterns = []
@@ -27,6 +30,11 @@ class HopfieldNetwork:
         return np.zeros_like(self.weighted_matrix.weighted_matrix_sum)
 
     def recover_sync(self, pattern: np.array) -> np.array:
+        """
+        Method to recover a pattern using synchronous algorithm
+        :param pattern: Current pattern to recover
+        :return: Recovered pattern
+        """
         pattern = pattern.copy()
         size = pattern.shape[0]
         pattern = pattern.reshape(-1, 1)
@@ -38,6 +46,11 @@ class HopfieldNetwork:
         return pattern
 
     def recover_async(self, pattern: np.array) -> np.array:
+        """
+        Method to recover a pattern using asynchronous algorithm
+        :param pattern: Current pattern to recover
+        :return: Recovered pattern
+        """
         pattern = pattern.copy()
         size = pattern.shape[0]
         pattern = pattern.reshape(1, -1)
