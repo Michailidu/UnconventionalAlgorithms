@@ -4,7 +4,7 @@ from hopfield_network.pattern_grid import PatternGrid
 
 
 class PatternViewer(tk.Toplevel):
-    def __init__(self, master, patterns):
+    def __init__(self, master: tk.Tk, patterns: list[list[int]]):
         tk.Toplevel.__init__(self, master)
         self.patterns = patterns
         self.current_index = 0
@@ -20,14 +20,14 @@ class PatternViewer(tk.Toplevel):
 
         self.show_pattern()
 
-    def show_pattern(self):
+    def show_pattern(self) -> None:
         self.pattern_field.pattern = self.patterns[self.current_index]
         self.pattern_field.update_color_all()
 
-    def next_pattern(self):
+    def next_pattern(self) -> None:
         self.current_index = (self.current_index + 1) % len(self.patterns)
         self.show_pattern()
 
-    def prev_pattern(self):
+    def prev_pattern(self) -> None:
         self.current_index = (self.current_index - 1) % len(self.patterns)
         self.show_pattern()

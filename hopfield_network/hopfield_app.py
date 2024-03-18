@@ -8,7 +8,7 @@ from hopfield_network.pattern_viewer import PatternViewer
 
 
 class HopfieldApp:
-    def __init__(self, root):
+    def __init__(self, root: tk.Tk):
         size = 4
         self.hopfield_network = HopfieldNetwork(size)
         self.root = root
@@ -34,12 +34,12 @@ class HopfieldApp:
         self.output_text = tk.Label(self.root, text="")
         self.output_text.grid(row=idx, column=0, columnspan=2, padx=10, pady=10)
 
-    def get_current_pattern(self):
+    def get_current_pattern(self) -> np.ndarray:
         pattern = self.pattern_field.pattern
         pattern = np.array(pattern)
         return pattern
 
-    def perform_action_with_pattern(self, action, action_text):
+    def perform_action_with_pattern(self, action: callable, action_text: str) -> None:
         pattern = self.get_current_pattern()
         self.pattern_field.pattern = action(pattern)
         self.output_text.config(text=action_text)

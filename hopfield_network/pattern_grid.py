@@ -2,7 +2,7 @@ import tkinter as tk
 
 
 class PatternGrid(tk.Canvas):
-    def __init__(self, master, size, clickable=True, *args, **kwargs):
+    def __init__(self, master, size: int, clickable: bool = True, *args, **kwargs):
         self.size = size
         self.field_width = 50
         self.clickable = clickable
@@ -11,7 +11,7 @@ class PatternGrid(tk.Canvas):
         self.pattern = [[0 for _ in range(self.size)] for _ in range(self.size)]
         self.create_grid()
 
-    def create_grid(self):
+    def create_grid(self) -> None:
         for row in range(self.size):
             for col in range(self.size):
                 x1 = col * self.field_width
@@ -22,15 +22,15 @@ class PatternGrid(tk.Canvas):
                 if self.clickable:
                     self.tag_bind(rect, "<Button-1>", lambda event, row=row, col=col: self.on_click_field(row, col))
 
-    def on_click_field(self, row, col):
+    def on_click_field(self, row: int, col: int) -> None:
         self.pattern[row][col] = int(not self.pattern[row][col])
         self.update_color(row, col)
 
-    def update_color(self, row, col):
+    def update_color(self, row: int, col: int) -> None:
         color = "white" if self.pattern[row][col] == 0 else "black"
         self.itemconfig(row * self.size + col + 1, fill=color)
 
-    def update_color_all(self):
+    def update_color_all(self) -> None:
         for row in range(self.size):
             for col in range(self.size):
                 self.update_color(row, col)
