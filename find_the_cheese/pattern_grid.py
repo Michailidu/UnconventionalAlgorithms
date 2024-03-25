@@ -1,4 +1,5 @@
 import tkinter as tk
+from PIL import Image, ImageTk
 from enum import Enum
 from typing import Optional
 
@@ -20,18 +21,24 @@ rewards = {
 }
 
 
+def resize_image(filename: str, size: int) -> ImageTk.PhotoImage:
+    original_image = Image.open(filename)
+    original_image = original_image.resize((size, size))
+    return ImageTk.PhotoImage(original_image)
+
+
 class PatternGrid(tk.Canvas):
     def __init__(self, master, size: int, current_object: GridObject, clickable: bool = True, *args, **kwargs):
         self.size = size
         self.field_width = 70
         self.clickable = clickable
         self.current_object = current_object
-        self.color_mapping = {
-            GridObject.LAND: "white",
-            GridObject.WALL: "blue",
-            GridObject.MOUSE: "gray",
-            GridObject.TRAP: "red",
-            GridObject.CHEESE: "yellow"
+        self.image_mapping = {
+            GridObject.LAND: resize_image("images/land.png", self.field_width),
+            GridObject.WALL: resize_image("images/wall.png", self.field_width),
+            GridObject.MOUSE: resize_image("images/mouse.png", self.field_width),
+            GridObject.TRAP: resize_image("images/trap.png", self.field_width),
+            GridObject.CHEESE: resize_image("images/cheese.png", self.field_width)
         }
         width = self.size * self.field_width
         tk.Canvas.__init__(self, master, width=width, height=width, *args, **kwargs)
@@ -44,24 +51,23 @@ class PatternGrid(tk.Canvas):
             for col in range(self.size):
                 x1 = col * self.field_width
                 y1 = row * self.field_width
-                x2 = x1 + self.field_width
-                y2 = y1 + self.field_width
-                rect = self.create_rectangle(x1, y1, x2, y2, fill=self.color_mapping[GridObject.LAND], width=1)
+                image = self.image_mapping[GridObject.LAND]
+                rect = self.create_image(x1, y1, anchor=tk.NW, image=image)
                 if self.clickable:
                     self.tag_bind(rect, "<Button-1>", lambda event, row=row, col=col: self.on_click_field(row, col))
 
     def on_click_field(self, row: int, col: int) -> None:
         self.pattern[row][col] = self.current_object
-        self.update_color(row, col)
+        self.update_image(row, col)
 
-    def update_color(self, row: int, col: int) -> None:
-        color = self.color_mapping[self.pattern[row][col]]
-        self.itemconfig(row * self.size + col + 1, fill=color)
+    def update_image(self, row: int, col: int) -> None:
+        image = self.image_mapping[self.pattern[row][col]]
+        self.itemconfig(row * self.size + col + 1, image=image)
 
-    def update_color_all(self) -> None:
+    def update_image_all(self) -> None:
         for row in range(self.size):
             for col in range(self.size):
-                self.update_color(row, col)
+                self.update_image(row, col)
 
     def change_object_placement(self, object_type: GridObject) -> None:
         self.current_object = object_type
@@ -73,8 +79,8 @@ class PatternGrid(tk.Canvas):
         if visualize:
             self.pattern[old_row][old_col] = GridObject.LAND
             self.pattern[new_row][new_col] = GridObject.MOUSE
-            self.update_color(old_row, old_col)
-            self.update_color(new_row, new_col)
+            self.update_image(old_row, old_col)
+            self.update_image(new_row, new_col)
         return reward
 
     def is_trap(self, row: int, col: int) -> bool:
