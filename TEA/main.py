@@ -45,17 +45,25 @@ def prepare_plot(density=500):
 def get_animation_function(ax, real_values, imaginary_values):
     r = real_values
     i = imaginary_values
+
     def animate(step):
         nonlocal r, i
+        global x_limits, y_limits
+
+        if step == 0:
+            x_limits = (-2, 1)
+            y_limits = (-1, 1)
+        print(f"Step {step}")
         ax.clear()
         ax.set_xticks([], [])
         ax.set_yticks([], [])
 
-        zoom(ax, 239.5, 59.40322580645159, 1.2)
+        zoom(ax, 0.48, 0.51, 1.1)
         _, _, (r, i) = prepare_plot()
         values = get_values(r, i)
 
         img = ax.imshow(values, interpolation="bicubic", cmap='plasma')
+        ax.set_title(f"step: {step}")
         return [img]
     return animate
 
@@ -65,14 +73,18 @@ def animate_fractal():
     fig, ax, (real_values, imaginary_values) = prepare_plot()
     anim = animation.FuncAnimation(fig,
                                    get_animation_function(ax, real_values, imaginary_values),
-                                   frames=5, interval=120, blit=True)
-    anim.save('mandelbrot.gif', writer='imagemagick')
+                                   frames=100, interval=120, blit=True)
+    anim.save('mandelbrot.gif')
 
 
 def zoom(ax, x, y, zoom_ratio=2.):
     global x_limits, y_limits
     xmin_win, xmax_win = ax.get_xlim()
+    if xmin_win > xmax_win:
+        xmin_win, xmax_win = xmax_win, xmin_win
     ymax_win, ymin_win = ax.get_ylim()
+    if ymin_win > ymax_win:
+        ymin_win, ymax_win = ymax_win, ymin_win
 
     x_range = x_limits[1] - x_limits[0]
     y_range = y_limits[1] - y_limits[0]
@@ -96,7 +108,6 @@ def on_click(event, ax):
     global x_limits, y_limits
     if event.button == 1:  # Left mouse button
         x_win, y_win = event.xdata, event.ydata
-        print(f'x: {x_win}, y: {y_win}')
         zoom(ax, x_win, y_win)
         interactive_mandelbrot()
 
@@ -111,7 +122,8 @@ def interactive_mandelbrot(density=500):
 
 
 if __name__ == '__main__':
-    create_animation = False
+    create_animation = True
+
     if create_animation:
         animate_fractal()
     else:
