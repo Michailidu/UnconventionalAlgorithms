@@ -11,7 +11,7 @@ def ifs():
     history = History()
 
     # algorithm to generate fractal
-    iterations = 1000
+    iterations = 5000
     point = np.array([0, 0, 0])
     for _ in range(iterations):
         transformation_idx = np.random.randint(0, len(transformation_storage))

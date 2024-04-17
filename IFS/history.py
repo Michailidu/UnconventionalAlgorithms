@@ -12,7 +12,7 @@ class History:
 
     def animate(self) -> None:
         """
-        Create 3D animation of the history. In each step draw the next point.
+        Create 3D animation of the history.
         """
         matplotlib.use('TkAgg')
         fig = plt.figure()
@@ -26,7 +26,7 @@ class History:
         for i in range(0, len(self.history), chunk_size):
             chunk = self.history[i:i + chunk_size]
             for point in chunk:
-                ax.scatter(point[0], point[1], point[2], color='c')
-            plt.pause(10 ** -3)
+                ax.scatter(point[0], point[1], point[2], color='c', s=1)
+            plt.pause(10 ** -6)
 
         plt.show()
