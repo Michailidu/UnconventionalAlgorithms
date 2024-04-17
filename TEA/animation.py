@@ -5,7 +5,6 @@ from TEA.plot import zoom, prepare_plot
 from TEA.config import x_limits, y_limits
 
 
-
 def get_animation_function(ax, real_values, imaginary_values):
     r = real_values
     i = imaginary_values
